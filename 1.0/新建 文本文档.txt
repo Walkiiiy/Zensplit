@@ -1,0 +1,6 @@
+pycharm中将PaddleOCR-release-2.6设为源文件夹
+生图放在rowpic，完全不能带黑边或下划线等，最好为标准宋体公文格式
+执行detector中的main.py
+结果在outcome里名为outcome.jpg
+
+无法精准切割英文字符，字体单一，应用场景单一
