@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import string
 def get_vvList(list_data):
     #取出list中像素存在的区间
     vv_list=list()
@@ -89,38 +90,98 @@ def add_row_until_blank(lis,start):#从任意位置开始，扫描至非空列�
             i+=1
     return res,i
 
-def get_vvList_Zen(list_data,char_width):
+def split_ch(list_data,row_num,total_row,char_width):
+    v_list,row_num=add_row_until_blank(list_data,row_num)    
+    #分裂检查
+    is_more=check_if_more(list_data,row_num,char_width,len(v_list))
+    if is_more:
+        while is_more:
+            to_be_add,row_num=add_row_until_blank(list_data,row_num)
+            if row_num>=total_row:
+                break    
+            v_list+=to_be_add
+            is_more=check_if_more(list_data,row_num,char_width,len(v_list))
+    return v_list,row_num
+
+def split_eng_low(list_data,row_num,total_row,char_width):
+    if is_more:
+        while is_more:
+            to_be_add,row_num=add_row_until_blank(list_data,row_num)
+            if row_num>=total_row:
+                break    
+            v_list+=to_be_add
+            is_more=check_if_more(list_data,row_num,char_width,len(v_list))
+    return v_list,row_num
+
+
+def split_eng_up(list_data,row_num,total_row,char_width):
+    if is_more:
+        while is_more:
+            to_be_add,row_num=add_row_until_blank(list_data,row_num)
+            if row_num>=total_row:
+                break    
+            v_list+=to_be_add
+            is_more=check_if_more(list_data,row_num,char_width,len(v_list))
+    return v_list,row_num
+
+
+def split_num(list_data,row_num,total_row,char_width):
+    if is_more:
+        while is_more:
+            to_be_add,row_num=add_row_until_blank(list_data,row_num)
+            if row_num>=total_row:
+                break    
+            v_list+=to_be_add
+            is_more=check_if_more(list_data,row_num,char_width,len(v_list))
+    return v_list,row_num
+
+
+def split_symbol(list_data,row_num,total_row,char_width):
+    if is_more:
+        while is_more:
+            to_be_add,row_num=add_row_until_blank(list_data,row_num)
+            if row_num>=total_row:
+                break    
+            v_list+=to_be_add
+            is_more=check_if_more(list_data,row_num,char_width,len(v_list))
+    return v_list,row_num
+
+
+def get_vvList_Zen(list_data,char_width,ocr_content):
     #取出list中像素存在的区间
     vv_list=list()
     v_list=list()
 
     total_row = len(list_data)
     row_num = 0
-
+    char_num=0
     while row_num<total_row:
-        v_list,row_num=add_row_until_blank(list_data,row_num)
         if row_num>=total_row:
             break
-        
-        #分裂检查
-        is_more=check_if_more(list_data,row_num,char_width,len(v_list))
-        if is_more:
-            while is_more:
-                to_be_add,row_num=add_row_until_blank(list_data,row_num)
-                if row_num>=total_row:
-                    break    
-                v_list+=to_be_add
-                is_more=check_if_more(list_data,row_num,char_width,len(v_list))
+        if char_num>=len(ocr_content):
+            break
+        if '\u4e00' <=ocr_content[char_num]<= '\u9fa5':
+            v_list,row_num=split_ch(list_data,row_num,total_row,char_width)
+        elif ocr_content[char_num] in string.ascii_lowercase:
+            v_list,row_num=split_eng_low(list_data,row_num,total_row,char_width)
+        elif ocr_content[char_num] in string.ascii_uppercase:
+            v_list,row_num=split_eng_up(list_data,row_num,total_row,char_width)
+        elif ocr_content[char_num] in string.digits:
+            v_list,row_num=split_num(list_data,row_num,total_row,char_width)
+        else:
+            v_list,row_num=split_ch(list_data,row_num,total_row,char_width)
+
         #添加字符
         if v_list:
             vv_list.append(v_list)
             v_list=[]
         
         row_num+=1
+        char_num+=1
 
     return vv_list
 
-def get_vertical_Zen(binary,char_width):
+def get_vertical_Zen(binary,char_width,ocr_content):
     rows,cols=binary.shape#行，列
     ver_list=[0]*cols
     for j in range(cols):
@@ -141,7 +202,7 @@ def get_vertical_Zen(binary,char_width):
         cv2.line(img_white,pt1,pt2,(0,),1)
 
     #切割单一字符
-    vv_list=get_vvList_Zen(ver_list,char_width)
+    vv_list=get_vvList_Zen(ver_list,char_width,ocr_content)
     chars=[]
     for i in vv_list:
         #print(i)
