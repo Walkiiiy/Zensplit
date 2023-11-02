@@ -4,7 +4,7 @@ import split
 import cv2
 #特殊字符：省略号/姚/比/左右结构(旧、三点水、口字旁)/门/们/小/训/全体/"/英文字符
 
-img_path='/home/walkiiiy/Zensplit/2.0/src/rawpic/中英文加数字.png'#设置图像路径，必须是相对路径且不能有中文
+img_path='/home/walkiiiy/Zensplit/2.0/src/rawpic/test.png'#设置图像路径，必须是相对路径且不能有中文
 if __name__=='__main__':
 
     #投影法图像分割
@@ -51,7 +51,7 @@ if __name__=='__main__':
     #显示和存储图片
     # cv2.imshow('outcome',img_cut)
     # cv2.waitKey(0)
-    cv2.imwrite("/home/walkiiiy/Zensplit/2.0/src/outcome/中英文加数字.jpg", img_cut)
+    cv2.imwrite("/home/walkiiiy/Zensplit/2.0/src/outcome/test.jpg", img_cut)
 
 
 
