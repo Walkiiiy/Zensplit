@@ -68,7 +68,7 @@ def check_if_more(lis,start,char_width,old_length):
     if j-len(to_be_add)-i>dist_to_check:
         return 0
     #如果添加该部分后字符过长，则不应该添加
-    if width> 1.2*char_width[1]:
+    if width>=1.2*char_width[1]:
         return 0
     return 1
 
@@ -161,7 +161,7 @@ def get_vvList_Zen(list_data,char_width,ocr_content):
             v_list,row_num=split_pure_projection(list_data,row_num)
         elif ocr_content[char_num] =='-' or ocr_content[char_num] =='-' or ocr_content[char_num] =='_':
             v_list,row_num=split_by_range(list_data,row_num,char_width_dash)
-        elif ocr_content[char_num] =='(' or ocr_content[char_num] ==')' or ocr_content[char_num] =='{' or ocr_content[char_num] =='}':
+        elif ocr_content[char_num] =='(' or ocr_content[char_num] ==')' or ocr_content[char_num] =='{' or ocr_content[char_num] =='}'or ocr_content[char_num] =='（' or ocr_content[char_num] =='）':
             v_list,row_num=split_by_range(list_data,row_num,char_width_brackets)
         elif ocr_content[char_num] =='/' or ocr_content[char_num] =='\\' :
             v_list,row_num=split_by_range(list_data,row_num,char_width_slash)

@@ -32,7 +32,7 @@ if __name__=='__main__':
     #预处理ocr内容
     ocr_content=''
     for c in ocr_content_raw:
-        if ord(c)!=10 and ord(c)!=12288 and ord(c)!=8194 and c!='\n'and c!='\r'and c!='\t':
+        if ord(c)!=10 and ord(c)!=12288 and c!=' ' and ord(c)!=8194 and c!='\n'and c!='\r'and c!='\t':
             ocr_content+=c
     ocr_content_store=ocr_content
 
@@ -74,7 +74,7 @@ if __name__=='__main__':
         print("第%d行%d字"%(row_num,row_chr_num))
         print("本行切割的字符：",ocr_content[:row_chr_num])
         ocr_content=ocr_content[row_chr_num:]#更新ocr字符串 
-        print("本行坐标",h_list_Zen)
+        # print("本行坐标",h_list_Zen)
     print("second scan,num of char:",len(ordinats_Zen))
     #print(ordinats_Zen)
 
@@ -88,6 +88,8 @@ if __name__=='__main__':
     for ordinate in ordinats_Zen:
         img_cut=cv2AddChineseText(img_cut,ocr_content_store[i],((ordinate[0][0]+ordinate[0][1])//2, ordinate[1][0]-(ordinate[0][1]-ordinate[0][0])//2))
         i+=1
+    
+    
     #显示和存储图片
     # cv2.imshow('outcome',img_cut)
     # cv2.waitKey(0)
