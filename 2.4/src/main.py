@@ -10,6 +10,7 @@ import config
 from config import img_path, txtpath, outcomepath
 from keras_master import predict
 import warnings
+import sys
 
 
 def cv2AddChineseText(img, text, position, textColor=(0, 0, 0), textSize=15):
@@ -62,7 +63,6 @@ if __name__ == '__main__':
         for x_ordinate in h_list:
             ordinats.append((x_ordinate, line))
     print("first scan,num of char:", len(ordinats))
-    # print(ordinats)
 
     char_width = split.get_inform(ordinats)
     print(char_width)
@@ -72,8 +72,12 @@ if __name__ == '__main__':
     row_num = 0  # 行数
     for line in lines:
         img_hor = binary[line[0]:line[1], :]
-        h_list_Zen = vertical.get_vertical_Zen(
-            img_hor, char_width, ocrRes[row_num])  # 第二趟
+        try:
+            h_list_Zen = vertical.get_vertical_Zen(
+                img_hor, char_width, ocrRes[row_num])  # 第二趟
+        except:
+            warnings.warn('fucked!', UserWarning)
+            break
         row_chr_num = len(h_list_Zen)  # 本行字数
         i = 0
         for x_ordinate in h_list_Zen:

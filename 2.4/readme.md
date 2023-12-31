@@ -1,1 +1,1 @@
-添加神经网络纠错模块,检测行中和行末，出错抛warning
+添加神经网络纠错模块,检测行中和行末，出错抛warning.使用前先解压src/keras_master/font_img,zip中的字库图片
