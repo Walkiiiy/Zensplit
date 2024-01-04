@@ -3,13 +3,13 @@
   <div id="picArea">
   <div id="inputPic" >
     <img v-if="!showInput" src="promptPic.png" height="100" width="100" style="position: relative; top: 30vh;"> 
-    <img v-if="showInput" :src="inputSrc" height="500" width="380">
+    <img v-if="showInput" :src="inputSrc" height="500" width="350">
   </div>
   <div id="outputPic">
     <img v-if="!showOutput && !loading" src="promptPic.png" height="100" width="100" 
     style="position: relative; top: 30vh;">
     <img v-if="loading" src="loadingPic.gif" height="100" width="100" style="position: relative; top: 30vh;"> 
-    <img v-if="showOutput" @load="loadFinished" :src="outputSrc" height="500" width="380">
+    <img v-if="showOutput" @load="loadFinished" :src="outputSrc" height="500" width="350">
   </div>
   </div>
     <div style="position:absolute; right: 5vh; text-align: center;">
@@ -17,7 +17,8 @@
     {{ introduction }}
   </div>
   <div id="result">
-    {{ result }}
+    <textarea readonly v-model="result" style="background-color:rgb(35,35,35); border:none;resize: none; color: beige; width:23vw;height: 25vh;">
+    </textarea>
   </div>
   </div>
   <div id="uploadButton">
@@ -28,6 +29,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import UploadImage from './components/UploadImage.vue';
 export default {
   name: 'App',
@@ -53,10 +55,21 @@ export default {
     },
     loadFinished() {
       this.loading = 0;
+      this.getOrdinates();
+    },
+    getOrdinates() {
+      const api = 'http://127.0.0.1:5000/ordinates';
+      axios.get(api)
+        .then((Response) => {
+          this.result = Response.data.ordinates;
+          console.log(this.result)
+        })
+        .catch((error) => {
+          throw error
+        })
     }
   },
   mounted() {
-      document.body.style.overflow='hidden';
   }
 }
 </script>

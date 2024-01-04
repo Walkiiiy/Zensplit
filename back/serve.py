@@ -4,7 +4,7 @@ import os
 from main import main
 dirPath = '/home/walkiiiy/Zensplit/back/pics'
 inputPath = '/home/walkiiiy/Zensplit/back/pics/input.jpg'
-
+ordinates = []
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
@@ -26,8 +26,14 @@ def get_input():
 
 @app.route('/outputPic', methods=['GET'])
 def get_output():
+    global ordinates
     ordinates = main()
     return send_from_directory(dirPath, 'output.jpg')
+
+
+@app.route('/ordinates', methods=['get'])
+def get_ordinates():
+    return jsonify({'ordinates': str(ordinates)})
 
 
 if __name__ == '__main__':
